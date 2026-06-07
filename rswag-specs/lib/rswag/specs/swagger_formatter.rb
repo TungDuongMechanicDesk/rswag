@@ -52,11 +52,13 @@ module Rswag
       def stop(_notification = nil)
         @config.swagger_docs.each do |url_path, doc|
           unless doc_version(doc).start_with?('2')
-            doc[:paths]&.each_pair do |_k, v|
+            # doc[:paths]&.each_pair do |_k, v|
+            (doc[:paths] || {}).each_pair do |_k, v|
               v.each_pair do |_verb, value|
                 is_hash = value.is_a?(Hash)
                 if is_hash && value[:parameters]
-                  schema_param = value[:parameters]&.find { |p| (p[:in] == :body || p[:in] == :formData) && p[:schema] }
+                  # schema_param = value[:parameters]&.find { |p| (p[:in] == :body || p[:in] == :formData) && p[:schema] }
+                  schema_param = (value[:parameters] || []).find { |p| (p[:in] == :body || p[:in] == :formData) && p[:schema] }
                   mime_list = value[:consumes] || doc[:consumes]
 
                   if value && schema_param && mime_list
@@ -185,7 +187,8 @@ module Rswag
       def upgrade_oauth!(swagger_doc)
         # find flow in securitySchemes (securityDefinitions will have been re-written)
         schemes = swagger_doc.dig(:components, :securitySchemes)
-        return unless schemes&.any? { |_k, v| v.key?(:flow) }
+        # return unless schemes&.any? { |_k, v| v.key?(:flow) }
+        return unless schemes && schemes.any? { |_k, v| v.key?(:flow) }
 
         schemes.each do |name, v|
           next unless v.key?(:flow)

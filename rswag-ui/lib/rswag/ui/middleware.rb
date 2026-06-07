@@ -41,7 +41,7 @@ module Rswag
       end
 
       def csp
-        <<~POLICY.gsub "\n", ' '
+        <<-POLICY.gsub "\n", ' '
           default-src 'self';
           img-src 'self' data:;
           font-src 'self' https://fonts.gstatic.com;
