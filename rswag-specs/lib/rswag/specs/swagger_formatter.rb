@@ -62,10 +62,12 @@ module Rswag
                   mime_list = value[:consumes] || doc[:consumes]
 
                   if value && schema_param && mime_list
-                    value[:requestBody] = { content: {} } unless value.dig(:requestBody, :content)
+                    # value[:requestBody] = { content: {} } unless value.dig(:requestBody, :content)
+                    value[:requestBody] = { content: {} } unless value[:requestBody] && value[:requestBody][:content]
                     value[:requestBody][:required] = true if schema_param[:required]
                     value[:requestBody][:description] = schema_param[:description] if schema_param[:description]
-                    examples = value.dig(:request_examples)
+                    # examples = value.dig(:request_examples)
+                    examples = value[:request_examples]
                     mime_list.each do |mime|
                       value[:requestBody][:content][mime] = { schema: schema_param[:schema] }
                       if examples
@@ -186,7 +188,8 @@ module Rswag
 
       def upgrade_oauth!(swagger_doc)
         # find flow in securitySchemes (securityDefinitions will have been re-written)
-        schemes = swagger_doc.dig(:components, :securitySchemes)
+        # schemes = swagger_doc.dig(:components, :securitySchemes)
+        schemes = swagger_doc[:components] && swagger_doc[:components][:securitySchemes]
         # return unless schemes&.any? { |_k, v| v.key?(:flow) }
         return unless schemes && schemes.any? { |_k, v| v.key?(:flow) }
 

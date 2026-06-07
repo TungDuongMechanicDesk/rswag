@@ -179,7 +179,8 @@ module Rswag
           end
         end
 
-        type = param[:type] || param.dig(:schema, :type)
+        # type = param[:type] || param.dig(:schema, :type)
+        type = param[:type] || (param[:schema] && param[:schema][:type])
         # return "#{name}=#{value}" unless type&.to_sym == :array
         return "#{name}=#{value}" unless type && type.to_sym == :array
 
