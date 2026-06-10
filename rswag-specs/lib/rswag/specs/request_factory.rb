@@ -146,10 +146,12 @@ module Rswag
 
         # OAS 3: https://swagger.io/docs/specification/serialization/
         if swagger_doc && doc_version(swagger_doc).start_with?('3') && param[:schema]
-          style = param[:style]&.to_sym || :form
+          # style = param[:style]&.to_sym || :form
+          style = param[:style] ? param[:style].to_sym : :form
           explode = param[:explode].nil? ? true : param[:explode]
 
-          case param[:schema][:type]&.to_sym
+          # case param[:schema][:type]&.to_sym
+          case param[:schema][:type] ? param[:schema][:type] : nil
           when :object
             case style
             when :deepObject
@@ -178,8 +180,10 @@ module Rswag
           end
         end
 
-        type = param[:type] || param.dig(:schema, :type)
-        return "#{escaped_name}=#{CGI.escape(value.to_s)}" unless type&.to_sym == :array
+        # type = param[:type] || param.dig(:schema, :type)
+        type = param[:type] || (param[:schema] && param[:schema][:type])
+        # return "#{escaped_name}=#{CGI.escape(value.to_s)}" unless type&.to_sym == :array
+        return "#{escaped_name}=#{CGI.escape(value.to_s)}" unless type && type.to_sym == :array
 
         case param[:collectionFormat]
         when :ssv
@@ -287,7 +291,7 @@ module Rswag
       end
 
       def message
-        <<~MSG
+        <<-MSG
           Missing parameter '#{body_param}'
 
           Please check your spec. It looks like you defined a body parameter,

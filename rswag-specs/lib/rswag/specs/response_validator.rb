@@ -35,8 +35,10 @@ module Rswag
         header_schemas = (metadata[:response][:headers] || {})
         expected = header_schemas.keys
         expected.each do |name|
-          nullable_attribute = header_schemas.dig(name.to_s, :schema, :nullable)
-          required_attribute = header_schemas.dig(name.to_s, :required)
+          # nullable_attribute = header_schemas.dig(name.to_s, :schema, :nullable)
+          nullable_attribute = header_schemas[name.to_s] && header_schemas[name.to_s][:schema] && header_schemas[name.to_s][:schema][:nullable]
+          # required_attribute = header_schemas.dig(name.to_s, :required)
+          required_attribute = header_schemas[name.to_s] && header_schemas[name.to_s][:required]
 
           is_nullable = nullable_attribute.nil? ? false : nullable_attribute
           is_required = required_attribute.nil? ? true : required_attribute
