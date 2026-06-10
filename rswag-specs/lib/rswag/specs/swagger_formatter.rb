@@ -187,7 +187,7 @@ module Rswag
         # schemes = swagger_doc.dig(:components, :securitySchemes)
         schemes = swagger_doc[:components] && swagger_doc[:components][:securitySchemes]
         # return unless schemes&.any? { |_k, v| v.key?(:flow) }
-        return unless scheme && schemes.any? { |_k, v| v.key?(:flow) }
+        return unless schemes && schemes.any? { |_k, v| v.key?(:flow) }
 
         schemes.each do |name, v|
           next unless v.key?(:flow)
