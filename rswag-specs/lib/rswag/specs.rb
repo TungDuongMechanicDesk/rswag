@@ -48,10 +48,10 @@ module Rswag
       end
     end
 
-    Specs.deprecator.deprecate_methods(
-      RSpec::Core::Configuration,
-      RENAMED_METHODS.to_h { |old_name, new_name| ["#{old_name}=".to_sym, "#{new_name}=".to_sym] }
-    )
+    # Specs.deprecator.deprecate_methods(
+    #   RSpec::Core::Configuration,
+    #   RENAMED_METHODS.to_h { |old_name, new_name| ["#{old_name}=".to_sym, "#{new_name}=".to_sym] }
+    # )
 
     if RUBY_VERSION.start_with? '2.6'
       Specs.deprecator.warn('Rswag::Specs: WARNING: Support for Ruby 2.6 will be dropped in v3.0')
