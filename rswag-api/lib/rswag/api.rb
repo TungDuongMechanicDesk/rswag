@@ -29,9 +29,9 @@ module Rswag
       end
     end
 
-    Api.deprecator.deprecate_methods(
-      Configuration,
-      RENAMED_METHODS.to_h { |old_name, new_name| ["#{old_name}=".to_sym, "#{new_name}=".to_sym] }
-    )
+    # Api.deprecator.deprecate_methods(
+    #   Configuration,
+    #   RENAMED_METHODS.to_h { |old_name, new_name| ["#{old_name}=".to_sym, "#{new_name}=".to_sym] }
+    # )
   end
 end
