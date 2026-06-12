@@ -258,6 +258,9 @@ module Rswag
         # Rather that serializing with the appropriate encoding (e.g. multipart/form-data),
         # Rails test infrastructure allows us to send the values directly as a hash
         # PROS: simple to implement, CONS: serialization/deserialization is bypassed in test
+        body_param = parameters.find { |p| p[:in] == :body }
+        return example.send(body_param[:name]) if body_param && example.respond_to?(body_param[:name])
+
         tuples = parameters
           .select { |p| p[:in] == :formData }
           .map { |p| [p[:name], example.send(extract_getter(p))] }
